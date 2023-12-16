@@ -1,5 +1,7 @@
 type AudioRecorderError = variant {
   RecordingDoesNotExist : text;
+  Error : text;
+  InvalidPayload : text;
   UserDoesNotExist : text;
 };
 type Recording = record {
@@ -11,23 +13,22 @@ type Recording = record {
 };
 type User = record {
   id : text;
+  "principal" : principal;
   username : text;
   recordingIds : vec text;
   createdAt : nat64;
 };
 type _AzleResult = variant { Ok : Recording; Err : AudioRecorderError };
-type _AzleResult_1 = variant { Ok : User; Err : text };
-type _AzleResult_2 = variant { Ok : User; Err : AudioRecorderError };
-type _AzleResult_3 = variant { Ok : Recording; Err : text };
-type _AzleResult_4 = variant { Ok : vec Recording; Err : text };
-type _AzleResult_5 = variant { Ok : vec User; Err : text };
+type _AzleResult_1 = variant { Ok : User; Err : AudioRecorderError };
+type _AzleResult_2 = variant { Ok : vec Recording; Err : AudioRecorderError };
+type _AzleResult_3 = variant { Ok : vec User; Err : AudioRecorderError };
 service : () -> {
   createRecording : (vec nat8, text, text) -> (_AzleResult);
   createUser : (text) -> (_AzleResult_1);
   deleteRecording : (text) -> (_AzleResult);
-  deleteUser : (text) -> (_AzleResult_2);
-  readRecordingById : (text) -> (_AzleResult_3) query;
-  readRecordings : () -> (_AzleResult_4) query;
+  deleteUser : (text) -> (_AzleResult_1);
+  readRecordingById : (text) -> (_AzleResult) query;
+  readRecordings : () -> (_AzleResult_2) query;
   readUserById : (text) -> (_AzleResult_1) query;
-  readUsers : () -> (_AzleResult_5) query;
+  readUsers : () -> (_AzleResult_3) query;
 }
